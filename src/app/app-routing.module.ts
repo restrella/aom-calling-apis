@@ -6,6 +6,10 @@ import { ThirdComponent } from './third/third.component';
 import { FirstChildComponent } from './first-child/first-child.component';
 import { SecondChildComponent } from './second-child/second-child.component';
 import { BookResolver } from './resolvers/book.resolver';
+import { ActivateGuard } from './guards/activate.guard';
+import { ActivatechildGuard } from './guards/activatechild.guard';
+import { LoadGuard } from './guards/load.guard';
+import { DeactivateGuard } from './guards/deactivate.guard';
 
 const routes: Routes = [
   {
@@ -17,6 +21,7 @@ const routes: Routes = [
     // path: 'second/:id/:name/:age',
     path: 'second',
     component: SecondComponent,
+    canActivateChild: [ActivatechildGuard],
     children: [
       {
         path: 'firstChild',
@@ -30,6 +35,8 @@ const routes: Routes = [
   },
   {
     path: 'third',
+    // canActivate: [ActivateGuard],
+    canDeactivate: [DeactivateGuard],
     component: ThirdComponent,
     resolve: {
       books: BookResolver,
@@ -37,6 +44,7 @@ const routes: Routes = [
   },
   {
     path: 'fourth',
+    canLoad: [LoadGuard],
     loadChildren: () => import('./lazy/lazy.module').then((m) => m.LazyModule),
   },
 ];
